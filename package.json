@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "model-collection",
   "description": "Simple model with collections",
   "author": "Amador Mateo <amateofernandez@gmail.com>",
@@ -23,7 +23,7 @@
     "test:watch": "npm run test -- --watch",
     "test:cov": "babel-node $(npm bin)/istanbul cover $(npm bin)/_mocha -- --recursive",
     "preversion": "npm run lint && npm test",
-    "version": "npm run compile && git add -A lib",
+    "version": "npm run compile",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
