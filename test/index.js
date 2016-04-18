@@ -1,8 +1,28 @@
+/* eslint-disable no-new, no-unused-expressions*/
 import { expect } from 'chai';
-import { Model } from '../src';
-import { Collection } from '../src';
+import { Model, Collection } from '../src';
 
-describe('Model', function () {
+function getOneSimpleObject() {
+  return {
+    a: 'a',
+    b: 'b',
+  };
+}
+
+function getTwoSimpleObject() {
+  return [
+    {
+      c: 'c',
+      d: 'd',
+    },
+    {
+      e: 'e',
+      f: 'f',
+    },
+  ];
+}
+
+describe('Model', () => {
   it('Check if passed invalid argument to constructor throw error', () => {
     const error = 'First argument passed to constructor is invalid, ' +
         'expect object(key,value) or array';
@@ -17,14 +37,14 @@ describe('Model', function () {
         error
     );
   });
-  it('Set properties from object', function () {
+  it('Set properties from object', () => {
     const test = new Model(getOneSimpleObject());
     expect(test).to.include.keys('a');
     expect(test).to.include.keys('b');
   });
 });
 
-describe('Collection', function () {
+describe('Collection', () => {
   it('Check the first argument, ModelClass, is obligatory', () => {
     expect(() => {
       new Collection();
@@ -67,24 +87,3 @@ describe('Collection', function () {
     expect(resultSearch).to.have.lengthOf(1);
   });
 });
-
-
-function getOneSimpleObject(){
-  return {
-    a: 'a',
-    b: 'b',
-  };
-}
-
-function getTwoSimpleObject(){
-  return [
-    {
-      c: 'c',
-      d: 'd',
-    },
-    {
-      e: 'e',
-      f: 'f',
-    }
-  ]
-}

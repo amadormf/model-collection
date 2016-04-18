@@ -1,55 +1,50 @@
 export default class Collection {
-  constructor(ModelClass, objects){
-    if(!ModelClass){
-      throw new Error('ModelClass is not passed')
+  constructor(ModelClass, objects) {
+    if (!ModelClass) {
+      throw new Error('ModelClass is not passed');
     }
 
     this.Model = ModelClass;
     this.set = new Set();
-    if(objects && objects.length > 0){
+    if (objects && objects.length > 0) {
       this._addArray(objects);
     }
   }
 
-  add(element){
-    if( Object.prototype.toString.call( element ) === '[object Array]' ) {
+  add(element) {
+    if (Object.prototype.toString.call(element) === '[object Array]') {
       this._addArray(element);
-    }
-    else{
+    } else {
       this._addOneElement(element);
     }
     return this;
   }
 
-  size(){
+  size() {
     return this.set.size;
   }
 
-  searchElements(field, value){
+  searchElements(field, value) {
     const items = [];
-    for (let item of this.set){
-      if(item[field] === value){
+    for (const item of this.set) {
+      if (item[field] === value) {
         items.push(item);
       }
     }
     return items;
   }
 
-  _addOneElement(element){
-    if(element instanceof this.Model){
+  _addOneElement(element) {
+    if (element instanceof this.Model) {
       this.set.add(element);
-    }
-    else{
+    } else {
       this.set.add(new this.Model(element));
     }
   }
 
-  _addArray(elements){
-    for(let i = 0; i < elements.length; ++i){
+  _addArray(elements) {
+    for (let i = 0; i < elements.length; ++i) {
       this._addOneElement(new this.Model(elements[i]));
     }
   }
-
-
-
 }
