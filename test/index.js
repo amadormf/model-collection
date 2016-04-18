@@ -1,6 +1,6 @@
 /* eslint-disable no-new, no-unused-expressions*/
 import { expect } from 'chai';
-import { Model, Collection } from '../src';
+import { Model, Collection, Unserializer } from '../src';
 
 function getOneSimpleObject() {
   return {
@@ -22,6 +22,16 @@ function getTwoSimpleObject() {
   ];
 }
 
+class UnserializerMock extends Unserializer {
+  run(obj) {
+    return {
+      c: obj.a,
+      d: obj.b,
+    };
+  }
+}
+
+
 describe('Model', () => {
   it('Check if passed invalid argument to constructor throw error', () => {
     const error = 'First argument passed to constructor is invalid, ' +
@@ -37,10 +47,29 @@ describe('Model', () => {
         error
     );
   });
+
   it('Set properties from object', () => {
     const test = new Model(getOneSimpleObject());
     expect(test).to.include.keys('a');
     expect(test).to.include.keys('b');
+  });
+
+  it('Check if options is non object throw an error', () => {
+    expect(() => {
+      new Model({}, []);
+    }).to.throw(
+      'options parameters has to be an object'
+    );
+  });
+
+
+  it('Send a good unserializer', () => {
+    const unserializer = new UnserializerMock();
+    const testModel = new Model(
+      getOneSimpleObject(),
+      { unserializer }
+    );
+    expect(testModel).to.have.any.keys('c', 'd');
   });
 });
 
@@ -85,5 +114,31 @@ describe('Collection', () => {
     collection.add(getTwoSimpleObject());
     const resultSearch = collection.searchElements('c', 'c');
     expect(resultSearch).to.have.lengthOf(1);
+  });
+
+  it('Send options array to collections and expect error', () => {
+    expect(() => {
+      new Collection(Model, [], []);
+    }).to.throw('options parameters has to be an object');
+  });
+});
+
+
+describe('Unserializer', () => {
+  it('Load with options', () => {
+    const unserializer = new Unserializer({ a: 'a' });
+    expect(unserializer).to.include.keys('options');
+    const options = unserializer.options;
+    expect(options).to.include.keys('a');
+  });
+
+  it('Send a unserializer parent objetc, check throw error', () => {
+    expect(() => {
+      new Model({}, {
+        unserializer: new Unserializer(),
+      });
+    }).to.throw(
+      'Override this functions in your class'
+    );
   });
 });

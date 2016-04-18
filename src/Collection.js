@@ -1,7 +1,11 @@
 export default class Collection {
-  constructor(ModelClass, objects) {
+  constructor(ModelClass, objects = [], options = {}) {
     if (!ModelClass) {
       throw new Error('ModelClass is not passed');
+    }
+
+    if (options.constructor !== Object) {
+      throw new Error('options parameters has to be an object');
     }
 
     this.Model = ModelClass;
