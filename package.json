@@ -12,7 +12,8 @@
   "bugs": {
     "url": "https://github.com/amadormf/model-collection/issues"
   },
-  "main": "index.js",
+  "files": ["lib"],
+  "main": "./lib/index.js",
   "scripts": {
     "clean": "rm -rf lib",
     "compile": "babel -d lib src",
