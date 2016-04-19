@@ -28,10 +28,13 @@ export default class Model {
   }
 
   _unserialize(obj) {
-    const { unserializer } = this.options;
+    const { unserializers } = this.options;
+
     let finalObject = obj;
-    if (unserializer) {
-      finalObject = unserializer.run(obj);
+    if (unserializers) {
+      for (const unserialize of unserializers) {
+        finalObject = unserialize(finalObject);
+      }
     }
     Object.assign(this, finalObject);
     if (this.getPrimaryKey() === 'uuid') {

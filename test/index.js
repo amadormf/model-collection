@@ -1,6 +1,6 @@
 /* eslint-disable no-new, no-unused-expressions*/
 import { expect } from 'chai';
-import { Model, Collection, Unserializer } from '../src';
+import { Model, Collection } from '../src';
 
 function getOneSimpleObject() {
   return {
@@ -22,14 +22,20 @@ function getTwoSimpleObject() {
   ];
 }
 
-class UnserializerMock extends Unserializer {
-  run(obj) {
-    return {
-      c: obj.a,
-      d: obj.b,
-    };
-  }
+function unserializerMock(obj) {
+  return {
+    c: obj.a,
+    d: obj.b,
+  };
 }
+
+function unserializerMockSecond(obj) {
+  return {
+    e: obj.c,
+    f: obj.d,
+  };
+}
+
 
 class ModelWithPrimaryKeyMock extends Model {
   static _primaryKey = 'a';
@@ -67,12 +73,29 @@ describe('Model', () => {
 
 
   it('Send a good unserializer', () => {
-    const unserializer = new UnserializerMock();
     const testModel = new Model(
       getOneSimpleObject(),
-      { unserializer }
+      {
+        unserializers: [
+          unserializerMock,
+        ],
+      }
     );
     expect(testModel).to.have.any.keys('c', 'd');
+  });
+
+
+  it('Send a two unserializer', () => {
+    const testModel = new Model(
+      getOneSimpleObject(),
+      {
+        unserializers: [
+          unserializerMock,
+          unserializerMockSecond
+        ],
+      }
+    );
+    expect(testModel).to.have.any.keys('e', 'f');
   });
 
   it('Check if not difine primary key, return uuid field', () => {
@@ -204,20 +227,5 @@ describe('Collection', () => {
 
 
 describe('Unserializer', () => {
-  it('Load with options', () => {
-    const unserializer = new Unserializer({ a: 'a' });
-    expect(unserializer).to.include.keys('options');
-    const options = unserializer.options;
-    expect(options).to.include.keys('a');
-  });
 
-  it('Send a unserializer parent objetc, check throw error', () => {
-    expect(() => {
-      new Model({}, {
-        unserializer: new Unserializer(),
-      });
-    }).to.throw(
-      'Override this functions in your class'
-    );
-  });
 });
