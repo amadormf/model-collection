@@ -91,7 +91,7 @@ describe('Model', () => {
       {
         unserializers: [
           unserializerMock,
-          unserializerMockSecond
+          unserializerMockSecond,
         ],
       }
     );
