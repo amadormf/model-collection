@@ -8,8 +8,12 @@ export default class Collection {
       throw new Error('options parameters has to be an object');
     }
 
+    if (!Array.isArray(objects)) {
+      throw new Error('Elements has to be an array');
+    }
+
     this.Model = ModelClass;
-    this.set = new Set();
+    this._map = new Map();
     if (objects && objects.length > 0) {
       this._addArray(objects);
     }
@@ -25,12 +29,12 @@ export default class Collection {
   }
 
   size() {
-    return this.set.size;
+    return this._map.size;
   }
 
   searchElements(field, value) {
     const items = [];
-    for (const item of this.set) {
+    for (const item of this._map.values()) {
       if (item[field] === value) {
         items.push(item);
       }
@@ -38,11 +42,28 @@ export default class Collection {
     return items;
   }
 
+  searchElement(keyValue) {
+    return this._map.get(keyValue);
+  }
+
+  clear() {
+    this._map.clear();
+  }
+
+  has(keyValue) {
+    return this._map.has(keyValue);
+  }
+
+  delete(keyValue) {
+    return this._map.delete(keyValue);
+  }
+
   _addOneElement(element) {
     if (element instanceof this.Model) {
-      this.set.add(element);
+      this._map.set(element.getKey(), element);
     } else {
-      this.set.add(new this.Model(element));
+      const elementObj = new this.Model(element);
+      this._map.set(elementObj.getKey(), elementObj);
     }
   }
 
@@ -51,4 +72,5 @@ export default class Collection {
       this._addOneElement(new this.Model(elements[i]));
     }
   }
+
 }

@@ -31,6 +31,9 @@ class UnserializerMock extends Unserializer {
   }
 }
 
+class ModelWithPrimaryKeyMock extends Model {
+  static _primaryKey = 'a';
+}
 
 describe('Model', () => {
   it('Check if passed invalid argument to constructor throw error', () => {
@@ -71,6 +74,26 @@ describe('Model', () => {
     );
     expect(testModel).to.have.any.keys('c', 'd');
   });
+
+  it('Check if not difine primary key, return uuid field', () => {
+    const testModel = new Model(getOneSimpleObject());
+    expect(testModel.getPrimaryKey()).is.equal('uuid');
+  });
+
+  it('Define model with primary key, check getPrimaryKey', () => {
+    const testModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());
+    expect(testModel.getPrimaryKey()).is.equal('a');
+  });
+
+  it('Check generate uuid if not define primaryKey', () => {
+    const testModel = new Model(getOneSimpleObject());
+    expect(testModel.getKey()).to.not.be.a('undefined');
+  });
+
+  it('Check if the primaryKey is define, return correctly the value', () => {
+    const testModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());
+    expect(testModel.getKey()).is.equal('a');
+  });
 });
 
 describe('Collection', () => {
@@ -78,6 +101,12 @@ describe('Collection', () => {
     expect(() => {
       new Collection();
     }).to.throw('ModelClass is not passed');
+  });
+
+  it('Call to constructor with elements is non array, check throw', () => {
+    expect(() => {
+      new Collection(Model, {});
+    }).to.throw('Elements has to be an array');
   });
 
   it('Call to constructor with no elements', () => {
@@ -109,7 +138,7 @@ describe('Collection', () => {
     expect(resultSearch).to.be.empty;
   });
 
-  it('Search with on result found', () => {
+  it('Search with result found', () => {
     const collection = new Collection(Model);
     collection.add(getTwoSimpleObject());
     const resultSearch = collection.searchElements('c', 'c');
@@ -120,6 +149,56 @@ describe('Collection', () => {
     expect(() => {
       new Collection(Model, [], []);
     }).to.throw('options parameters has to be an object');
+  });
+
+  it('Search one element by key', () => {
+    const collection = new Collection(
+      ModelWithPrimaryKeyMock,
+      [getOneSimpleObject()]
+    );
+    const resultSearch = collection.searchElement('a');
+    expect(resultSearch).to.have.any.keys('a', 'b');
+  });
+
+  it('Search one element by key and no results found', () => {
+    const collection = new Collection(
+      ModelWithPrimaryKeyMock,
+      [getOneSimpleObject()]
+    );
+    const resultSearch = collection.searchElement('x');
+    expect(resultSearch).to.be.a('undefined');
+  });
+
+  it('Clear collection', () => {
+    const collection = new Collection(Model, getTwoSimpleObject());
+    collection.clear();
+    expect(collection.size()).to.be.equal(0);
+  });
+
+  it('Remove element', () => {
+    const collection = new Collection(
+      ModelWithPrimaryKeyMock,
+      [getOneSimpleObject()]
+    );
+    const deleted = collection.delete('a');
+    expect(deleted).to.be.true;
+    expect(collection.size()).to.be.equal(0);
+  });
+
+  it('Check if element exists', () => {
+    const collection = new Collection(
+      ModelWithPrimaryKeyMock,
+      [getOneSimpleObject()]
+    );
+    expect(collection.has('a')).to.be.true;
+  });
+
+  it('Check if element not exists', () => {
+    const collection = new Collection(
+      ModelWithPrimaryKeyMock,
+      [getOneSimpleObject()]
+    );
+    expect(collection.has('x')).to.be.false;
   });
 });
 

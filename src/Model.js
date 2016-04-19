@@ -1,4 +1,7 @@
+import uuid from 'uuid';
+
 export default class Model {
+  static _primaryKey = 'uuid';
   constructor(obj, options = {}) {
     if (options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
@@ -16,6 +19,14 @@ export default class Model {
     }
   }
 
+  getPrimaryKey() {
+    return this.constructor._primaryKey;
+  }
+
+  getKey() {
+    return this[this.getPrimaryKey()];
+  }
+
   _unserialize(obj) {
     const { unserializer } = this.options;
     let finalObject = obj;
@@ -23,5 +34,13 @@ export default class Model {
       finalObject = unserializer.run(obj);
     }
     Object.assign(this, finalObject);
+    if (this.getPrimaryKey() === 'uuid') {
+      this._generateUuid();
+    }
+  }
+
+  _generateUuid() {
+    this.uuid = uuid.v1();
   }
 }
+
