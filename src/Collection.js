@@ -75,4 +75,8 @@ export default class Collection {
     }
   }
 
+  [Symbol.iterator]() {
+    return this._map.values();
+  }
+
 }

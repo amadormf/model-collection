@@ -240,6 +240,17 @@ describe('Collection', () => {
     );
     expect(collection.has('x')).to.be.false;
   });
+
+  it('Iterate over collecton', () => {
+    const collection = new Collection(getTwoSimpleObject());
+    let cont = 0;
+    for (const model of collection) {
+      expect(model.constructor).to.be.equal(Model);
+      expect(model).to.not.be.an('undefined');
+      cont++;
+    }
+    expect(cont).to.be.equal(2);
+  });
 });
 
 
