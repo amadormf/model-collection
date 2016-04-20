@@ -3,8 +3,7 @@ import uuid from 'uuid';
 export default class Model {
   static _primaryKey = 'uuid';
   constructor(obj, options = {}) {
-    this._validateOptions(options);
-    
+    this._validateOptions(options); 
     this.options = options;
 
     if (obj && obj.constructor === Object) {
