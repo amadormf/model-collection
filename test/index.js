@@ -13,7 +13,7 @@ function getAnotherSimpleObject() {
   return {
     g: 'g',
     h: 'h',
-  }
+  };
 }
 
 function getTwoSimpleObject() {
