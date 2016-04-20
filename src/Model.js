@@ -36,6 +36,10 @@ export default class Model {
     Object.assign(this, finalObject);
     if (this.getPrimaryKey() === 'uuid') {
       this._generateUuid();
+    } else {
+      if (!this.getKey()) {
+        throw new Error('The value for primary key is not defined');
+      }
     }
   }
 

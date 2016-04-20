@@ -9,6 +9,13 @@ function getOneSimpleObject() {
   };
 }
 
+function getAnotherSimpleObject() {
+  return {
+    g: 'g',
+    h: 'h',
+  }
+}
+
 function getTwoSimpleObject() {
   return [
     {
@@ -131,6 +138,12 @@ describe('Model', () => {
   it('Check if the primaryKey is define, return correctly the value', () => {
     const testModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());
     expect(testModel.getKey()).is.equal('a');
+  });
+
+  it('Check if define primaryKey and not pass in an object, send error', () => {
+    expect(() => {
+      new ModelWithPrimaryKeyMock(getAnotherSimpleObject());
+    }).to.throw('The value for primary key is not defined');
   });
 });
 
