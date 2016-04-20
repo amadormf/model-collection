@@ -1,9 +1,8 @@
-export default class Collection {
-  constructor(ModelClass, objects = [], options = {}) {
-    if (!ModelClass) {
-      throw new Error('ModelClass is not passed');
-    }
+import Model from './Model';
 
+export default class Collection {
+  static _ModelClass = Model;
+  constructor(objects = [], options = {}) {
     if (options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
     }
@@ -12,11 +11,14 @@ export default class Collection {
       throw new Error('Elements has to be an array');
     }
 
-    this.Model = ModelClass;
     this._map = new Map();
     if (objects && objects.length > 0) {
       this._addArray(objects);
     }
+  }
+
+  _getModel() {
+    return this.constructor._ModelClass;
   }
 
   add(element) {
@@ -59,17 +61,17 @@ export default class Collection {
   }
 
   _addOneElement(element) {
-    if (element instanceof this.Model) {
+    if (element instanceof this._getModel()) {
       this._map.set(element.getKey(), element);
     } else {
-      const elementObj = new this.Model(element);
+      const elementObj = new (this._getModel())(element);
       this._map.set(elementObj.getKey(), elementObj);
     }
   }
 
   _addArray(elements) {
     for (let i = 0; i < elements.length; ++i) {
-      this._addOneElement(new this.Model(elements[i]));
+      this._addOneElement(new (this._getModel())(elements[i]));
     }
   }
 

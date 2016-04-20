@@ -36,9 +36,12 @@ function unserializerMockSecond(obj) {
   };
 }
 
-
 class ModelWithPrimaryKeyMock extends Model {
   static _primaryKey = 'a';
+}
+
+class CollectionWithModelMock extends Collection {
+  static _ModelClass = ModelWithPrimaryKeyMock;
 }
 
 describe('Model', () => {
@@ -132,49 +135,43 @@ describe('Model', () => {
 });
 
 describe('Collection', () => {
-  it('Check the first argument, ModelClass, is obligatory', () => {
-    expect(() => {
-      new Collection();
-    }).to.throw('ModelClass is not passed');
-  });
-
   it('Call to constructor with elements is non array, check throw', () => {
     expect(() => {
-      new Collection(Model, {});
+      new Collection({});
     }).to.throw('Elements has to be an array');
   });
 
   it('Call to constructor with no elements', () => {
-    const collection = new Collection(Model);
+    const collection = new Collection();
     expect(collection.size()).to.be.equal(0);
   });
 
   it('Call to constructor with elements', () => {
-    const collection = new Collection(Model, getTwoSimpleObject());
+    const collection = new Collection(getTwoSimpleObject());
     expect(collection.size()).to.be.equal(2);
   });
 
   it('Add one element to empty collection', () => {
-    const collection = new Collection(Model);
+    const collection = new Collection();
     collection.add(getOneSimpleObject());
     expect(collection.size()).to.be.equal(1);
   });
 
   it('Add two elements to empty collection', () => {
-    const collection = new Collection(Model);
+    const collection = new Collection();
     collection.add(getTwoSimpleObject());
     expect(collection.size()).to.be.equal(2);
   });
 
   it('Search with results of non elements', () => {
-    const collection = new Collection(Model);
+    const collection = new Collection();
     collection.add(getTwoSimpleObject());
     const resultSearch = collection.searchElements('key', 'nonvalue');
     expect(resultSearch).to.be.empty;
   });
 
   it('Search with result found', () => {
-    const collection = new Collection(Model);
+    const collection = new Collection();
     collection.add(getTwoSimpleObject());
     const resultSearch = collection.searchElements('c', 'c');
     expect(resultSearch).to.have.lengthOf(1);
@@ -182,13 +179,12 @@ describe('Collection', () => {
 
   it('Send options array to collections and expect error', () => {
     expect(() => {
-      new Collection(Model, [], []);
+      new Collection([], []);
     }).to.throw('options parameters has to be an object');
   });
 
   it('Search one element by key', () => {
-    const collection = new Collection(
-      ModelWithPrimaryKeyMock,
+    const collection = new CollectionWithModelMock(
       [getOneSimpleObject()]
     );
     const resultSearch = collection.searchElement('a');
@@ -196,8 +192,7 @@ describe('Collection', () => {
   });
 
   it('Search one element by key and no results found', () => {
-    const collection = new Collection(
-      ModelWithPrimaryKeyMock,
+    const collection = new CollectionWithModelMock(
       [getOneSimpleObject()]
     );
     const resultSearch = collection.searchElement('x');
@@ -205,14 +200,13 @@ describe('Collection', () => {
   });
 
   it('Clear collection', () => {
-    const collection = new Collection(Model, getTwoSimpleObject());
+    const collection = new Collection(getTwoSimpleObject());
     collection.clear();
     expect(collection.size()).to.be.equal(0);
   });
 
   it('Remove element', () => {
-    const collection = new Collection(
-      ModelWithPrimaryKeyMock,
+    const collection = new CollectionWithModelMock(
       [getOneSimpleObject()]
     );
     const deleted = collection.delete('a');
@@ -221,16 +215,14 @@ describe('Collection', () => {
   });
 
   it('Check if element exists', () => {
-    const collection = new Collection(
-      ModelWithPrimaryKeyMock,
+    const collection = new CollectionWithModelMock(
       [getOneSimpleObject()]
     );
     expect(collection.has('a')).to.be.true;
   });
 
   it('Check if element not exists', () => {
-    const collection = new Collection(
-      ModelWithPrimaryKeyMock,
+    const collection = new CollectionWithModelMock(
       [getOneSimpleObject()]
     );
     expect(collection.has('x')).to.be.false;
