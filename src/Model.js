@@ -3,11 +3,9 @@ import uuid from 'uuid';
 export default class Model {
   static _primaryKey = 'uuid';
   constructor(obj, options = {}) {
-    if (options.constructor !== Object) {
-      throw new Error('options parameters has to be an object');
-    } else {
-      this.options = options;
-    }
+    this._validateOptions(options);
+    
+    this.options = options;
 
     if (obj && obj.constructor === Object) {
       this._unserialize(obj);
@@ -44,6 +42,15 @@ export default class Model {
 
   _generateUuid() {
     this.uuid = uuid.v1();
+  }
+  _validateOptions(options) {
+    if (options.constructor !== Object) {
+      throw new Error('options parameters has to be an object');
+    }
+
+    if (options.unserializers && !Array.isArray(options.unserializers)) {
+      throw new Error('Unserializer has to be an array');
+    }
   }
 }
 

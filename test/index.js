@@ -71,6 +71,18 @@ describe('Model', () => {
     );
   });
 
+  it('Send a bad unserializer, not array', () => {
+    expect(() => {
+      new Model(
+        getOneSimpleObject(),
+        {
+          unserializers: unserializerMock,
+        }
+      );
+    }).to.throw(
+      'Unserializer has to be an array'
+    );
+  });
 
   it('Send a good unserializer', () => {
     const testModel = new Model(
