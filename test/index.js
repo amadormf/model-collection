@@ -201,7 +201,7 @@ describe('Collection', () => {
       [getOneSimpleObject()]
     );
     const resultSearch = collection.searchElement('a');
-    expect(resultSearch).to.have.any.keys('a', 'b');
+    expect(resultSearch).to.have.includes.keys('a', 'b');
   });
 
   it('Search one element by key and no results found', () => {
@@ -250,6 +250,21 @@ describe('Collection', () => {
       cont++;
     }
     expect(cont).to.be.equal(2);
+  });
+
+  it('If pass options to collections, this pass options to model', () => {
+    const collection = new CollectionWithModelMock(
+      [getOneSimpleObject()],
+      {
+        newOption: 'option',
+      }
+    );
+    expect(
+      collection
+        .searchElement('a')
+        ._options
+        .newOption
+    ).to.be.equal('option');
   });
 });
 

@@ -4,7 +4,7 @@ export default class Model {
   static _primaryKey = 'uuid';
   constructor(obj, options = {}) {
     this._validateOptions(options);
-    this.options = options;
+    this._options = options;
 
     if (obj && obj.constructor === Object) {
       this._unserialize(obj);
@@ -25,7 +25,7 @@ export default class Model {
   }
 
   _unserialize(obj) {
-    const { unserializers } = this.options;
+    const { unserializers } = this._options;
 
     let finalObject = obj;
     if (unserializers) {

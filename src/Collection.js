@@ -6,6 +6,7 @@ export default class Collection {
     if (options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
     }
+    this._options = options;
 
     if (!Array.isArray(objects)) {
       throw new Error('Elements has to be an array');
@@ -64,14 +65,14 @@ export default class Collection {
     if (element instanceof this._getModel()) {
       this._map.set(element.getKey(), element);
     } else {
-      const elementObj = new (this._getModel())(element);
+      const elementObj = new (this._getModel())(element, this._options);
       this._map.set(elementObj.getKey(), elementObj);
     }
   }
 
   _addArray(elements) {
     for (let i = 0; i < elements.length; ++i) {
-      this._addOneElement(new (this._getModel())(elements[i]));
+      this._addOneElement(new (this._getModel())(elements[i], this._options));
     }
   }
 
