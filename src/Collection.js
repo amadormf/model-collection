@@ -61,6 +61,14 @@ export default class Collection {
     return this._map.delete(keyValue);
   }
 
+  map(cb) {
+    const arrayCollection = [];
+    for (const element of this._map.values()) {
+      arrayCollection.push(cb(element));
+    }
+    return arrayCollection;
+  }
+
   _addOneElement(element) {
     if (element instanceof this._getModel()) {
       this._map.set(element.getKey(), element);

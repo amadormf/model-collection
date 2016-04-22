@@ -266,9 +266,11 @@ describe('Collection', () => {
         .newOption
     ).to.be.equal('option');
   });
+  it('Check map collection', () => {
+    const collection = new Collection(getTwoSimpleObject());
+    const collectionArray = collection.map(element => element);
+    expect(collectionArray).to.be.a('array');
+    expect(collectionArray[0]).to.have.includes.keys('c', 'd');
+  });
 });
 
-
-describe('Unserializer', () => {
-
-});
