@@ -69,11 +69,26 @@ export default class Collection {
     return arrayCollection;
   }
 
+  getFirst() {
+    return this._firstElement;
+  }
+  getLast() {
+    return this._lastElement;
+  }
+
   _addOneElement(element) {
     if (element instanceof this._getModel()) {
+      if (!this._firstElement) {
+        this._firstElement = element;
+      }
+      this._lastElement = element;
       this._map.set(element.getKey(), element);
     } else {
       const elementObj = new (this._getModel())(element, this._options);
+      if (!this._firstElement) {
+        this._firstElement = elementObj;
+      }
+      this._lastElement = elementObj;
       this._map.set(elementObj.getKey(), elementObj);
     }
   }

@@ -283,6 +283,16 @@ describe('Collection', () => {
     expect(collectionArray).to.be.a('array');
     expect(collectionArray[0]).to.have.includes.keys('c', 'd');
   });
+  it('Get first element of collection', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    expect(collection.getFirst()).to.have.includes.keys('c', 'd');
+  });
+  it('Get last element of collection', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    expect(collection.getLast()).to.have.includes.keys('e', 'f');
+  });
 });
 
 describe('Especify the type of fields', () => {
