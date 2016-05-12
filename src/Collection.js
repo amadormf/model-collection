@@ -76,6 +76,29 @@ export default class Collection {
     return this._lastElement;
   }
 
+  toArray() {
+    return this.map(element => element);
+  }
+
+  iteratorOver() {
+    const valuesArray = this.toArray();
+    let index = valuesArray.length - 1;
+    const iterable = {
+      [Symbol.iterator]() {
+        const iterator = {
+          next() {
+            if (index >= 0) {
+              return { value: valuesArray[index--] };
+            }
+            return { done: true };
+          },
+        };
+        return iterator;
+      },
+    };
+    return iterable;
+  }
+
   _addOneElement(element) {
     if (element instanceof this._getModel()) {
       if (!this._firstElement) {

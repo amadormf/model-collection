@@ -293,6 +293,20 @@ describe('Collection', () => {
 
     expect(collection.getLast()).to.have.includes.keys('e', 'f');
   });
+
+  it('Add method to array', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    expect(collection.toArray()).to.be.an('array').with.length(2);
+  });
+
+  it('Iterator over', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    for (const element of collection.iteratorOver()) {
+      expect(element.constructor).to.be.equal(Model);
+    }
+  });
 });
 
 describe('Especify the type of fields', () => {
