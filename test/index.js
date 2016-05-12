@@ -241,7 +241,7 @@ describe('Collection', () => {
     expect(collection.has('x')).to.be.false;
   });
 
-  it('Iterate over collecton', () => {
+  it('Iterate over collection', () => {
     const collection = new Collection(getTwoSimpleObject());
     let cont = 0;
     for (const model of collection) {
@@ -250,6 +250,17 @@ describe('Collection', () => {
       cont++;
     }
     expect(cont).to.be.equal(2);
+  });
+
+  it('Iterate over collection with custom collection', () => {
+    const collection = new CollectionWithModelMock([getOneSimpleObject()]);
+    let cont = 0;
+    for (const model of collection) {
+      expect(model.constructor).to.be.equal(ModelWithPrimaryKeyMock);
+      expect(model).to.not.be.an('undefined');
+      cont++;
+    }
+    expect(cont).to.be.equal(1);
   });
 
   it('If pass options to collections, this pass options to model', () => {
@@ -274,3 +285,18 @@ describe('Collection', () => {
   });
 });
 
+describe('Especify the type of fields', () => {
+  class WithTypePropertyModel extends Model {
+    static _types = {
+      typeModel: ModelWithPrimaryKeyMock,
+    };
+  }
+
+  it('Specify that one property is an another model', () => {
+    const propertyTypeModel = new WithTypePropertyModel({
+      a: 'a',
+      typeModel: getOneSimpleObject(),
+    });
+    expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
+  });
+});

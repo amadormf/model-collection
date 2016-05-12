@@ -7,7 +7,10 @@ export default class Model {
     this._options = options;
 
     if (obj && obj.constructor === Object) {
-      this._unserialize(obj);
+      const unserializeObj = this._unserialize(obj);
+      const finalObject = this._checkTypeProperties(unserializeObj);
+      this._assignObject(finalObject);
+
     } else {
       throw new Error(
           'First argument passed to constructor is invalid, ' +
@@ -27,12 +30,27 @@ export default class Model {
   _unserialize(obj) {
     const { unserializers } = this._options;
 
-    let finalObject = obj;
+    let unserializeObject = obj;
     if (unserializers) {
       for (const unserialize of unserializers) {
-        finalObject = unserialize(finalObject);
+        unserializeObject = unserialize(unserializeObject);
       }
     }
+    return unserializeObject;
+  }
+
+  _checkTypeProperties(obj) {
+    const _types = this.constructor._types;
+    if (_types) {
+      const typesKeys = Object.keys(_types);
+      for (const typeKey of typesKeys) {
+        obj[typeKey] = new _types[typeKey](obj[typeKey], this._options);
+      }
+    }
+    return obj;
+  }
+
+  _assignObject(finalObject) {
     Object.assign(this, finalObject);
     if (this.getPrimaryKey() === 'uuid') {
       this._generateUuid();
