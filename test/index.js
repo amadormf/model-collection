@@ -299,4 +299,13 @@ describe('Especify the type of fields', () => {
     });
     expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
   });
+
+  it('Send a property that is already the correct type', () => {
+    const objModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());
+    const propertyTypeModel = new WithTypePropertyModel({
+      a: 'a',
+      typeModel: objModel,
+    });
+    expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
+  });
 });

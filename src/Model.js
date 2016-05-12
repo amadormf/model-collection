@@ -43,7 +43,9 @@ export default class Model {
     if (_types) {
       const typesKeys = Object.keys(_types);
       for (const typeKey of typesKeys) {
-        obj[typeKey] = new _types[typeKey](obj[typeKey], this._options); // eslint-disable-line
+        if (obj[typeKey] && obj[typeKey].constructor !== _types[typeKey]) {
+          obj[typeKey] = new _types[typeKey](obj[typeKey], this._options); // eslint-disable-line
+        }
       }
     }
     return obj;
