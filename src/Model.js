@@ -10,7 +10,6 @@ export default class Model {
       const unserializeObj = this._unserialize(obj);
       const finalObject = this._checkTypeProperties(unserializeObj);
       this._assignObject(finalObject);
-
     } else {
       throw new Error(
           'First argument passed to constructor is invalid, ' +
@@ -44,7 +43,7 @@ export default class Model {
     if (_types) {
       const typesKeys = Object.keys(_types);
       for (const typeKey of typesKeys) {
-        obj[typeKey] = new _types[typeKey](obj[typeKey], this._options);
+        obj[typeKey] = new _types[typeKey](obj[typeKey], this._options); // eslint-disable-line
       }
     }
     return obj;
