@@ -99,6 +99,18 @@ export default class Collection {
     return iterable;
   }
 
+  [Symbol.iterator]() {
+    return this._map.values();
+  }
+
+  getIterator() {
+    return this._map.values()[Symbol.iterator]();
+  }
+
+  getIteratorEntries() {
+    return this._map[Symbol.iterator]();
+  }
+
   _addOneElement(element) {
     if (element instanceof this._getModel()) {
       if (!this._firstElement) {
@@ -120,10 +132,6 @@ export default class Collection {
     for (let i = 0; i < elements.length; ++i) {
       this._addOneElement(new (this._getModel())(elements[i], this._options));
     }
-  }
-
-  [Symbol.iterator]() {
-    return this._map.values();
   }
 
 }

@@ -307,6 +307,23 @@ describe('Collection', () => {
       expect(element.constructor).to.be.equal(Model);
     }
   });
+
+  it('Get Iterator values', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    const iterator = collection.getIterator();
+
+    expect(iterator.next().value).to.have.includes.keys('c', 'd');
+    expect(iterator.next().value).to.have.includes.keys('e', 'f');
+  });
+
+  it('Get iterator entries', () => {
+    const collection = new Collection(getTwoSimpleObject());
+    const iterator = collection.getIteratorEntries();
+
+    expect(iterator.next().value[1]).to.have.includes.keys('c', 'd');
+    expect(iterator.next().value[1]).to.have.includes.keys('e', 'f');
+  });
 });
 
 describe('Especify the type of fields', () => {
