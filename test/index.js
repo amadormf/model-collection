@@ -145,6 +145,10 @@ describe('Model', () => {
       new ModelWithPrimaryKeyMock(getAnotherSimpleObject());
     }).to.throw('The value for primary key is not defined');
   });
+  it('toJson', () => {
+    const testModel = new Model(getOneSimpleObject());
+    expect(JSON.stringify(testModel)).is.equals(JSON.stringify(getOneSimpleObject()));
+  });
 });
 
 describe('Collection', () => {
@@ -323,6 +327,11 @@ describe('Collection', () => {
 
     expect(iterator.next().value[1]).to.have.includes.keys('c', 'd');
     expect(iterator.next().value[1]).to.have.includes.keys('e', 'f');
+  });
+
+  it('toJSON', () => {
+    const collection = new Collection(getTwoSimpleObject());
+    expect(JSON.stringify(collection)).is.equal(JSON.stringify(getTwoSimpleObject()));
   });
 });
 

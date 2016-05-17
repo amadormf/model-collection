@@ -18,10 +18,6 @@ export default class Collection {
     }
   }
 
-  _getModel() {
-    return this.constructor._ModelClass;
-  }
-
   add(element) {
     if (Object.prototype.toString.call(element) === '[object Array]') {
       this._addArray(element);
@@ -80,6 +76,10 @@ export default class Collection {
     return this.map(element => element);
   }
 
+  toJSON() {
+    return this.toArray();
+  }
+
   iteratorOver() {
     const valuesArray = this.toArray();
     let index = valuesArray.length - 1;
@@ -133,5 +133,11 @@ export default class Collection {
       this._addOneElement(new (this._getModel())(elements[i], this._options));
     }
   }
+
+
+  _getModel() {
+    return this.constructor._ModelClass;
+  }
+
 
 }

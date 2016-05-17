@@ -52,6 +52,7 @@
     "npm": ">=3"
   },
   "dependencies": {
+    "core-decorators": "^0.12.2",
     "uuid": "^2.0.2"
   }
 }

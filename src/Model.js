@@ -1,7 +1,15 @@
 import uuid from 'uuid';
+import { nonenumerable } from 'core-decorators';
 
 export default class Model {
   static _primaryKey = 'uuid';
+
+  @nonenumerable
+  uuid = '';
+
+  @nonenumerable
+  _options = '';
+
   constructor(obj, options = {}) {
     this._validateOptions(options);
     this._options = options;
@@ -75,4 +83,3 @@ export default class Model {
     }
   }
 }
-
