@@ -59,8 +59,10 @@ export default class Collection {
 
   map(cb) {
     const arrayCollection = [];
+    let index = 0;
     for (const element of this._map.values()) {
-      arrayCollection.push(cb(element));
+      arrayCollection.push(cb(element, index));
+      index++;
     }
     return arrayCollection;
   }

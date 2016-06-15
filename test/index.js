@@ -283,7 +283,14 @@ describe('Collection', () => {
   });
   it('Check map collection', () => {
     const collection = new Collection(getTwoSimpleObject());
-    const collectionArray = collection.map(element => element);
+    const arrayOfIndex = [];
+    const collectionArray = collection.map((element, index) => {
+      arrayOfIndex.push(index);
+      return element;
+    });
+
+    expect(arrayOfIndex).to.has.length(2);
+    expect(arrayOfIndex).to.have.members([0, 1]);
     expect(collectionArray).to.be.a('array');
     expect(collectionArray[0]).to.have.includes.keys('c', 'd');
   });
