@@ -2,10 +2,10 @@ import uuid from 'uuid';
 import { nonenumerable } from 'core-decorators';
 
 export default class Model {
-  static _primaryKey = 'uuid';
+  static _primaryKey = 'generateUuid';
 
   @nonenumerable
-  uuid = '';
+  generateUuid = '';
 
   @nonenumerable
   _options = '';
@@ -61,7 +61,7 @@ export default class Model {
 
   _assignObject(finalObject) {
     Object.assign(this, finalObject);
-    if (this.getPrimaryKey() === 'uuid' && !this.getKey()) {
+    if (this.getPrimaryKey() === 'generateUuid') {
       this._generateUuid();
     } else {
       if (!this.getKey()) {
@@ -71,7 +71,7 @@ export default class Model {
   }
 
   _generateUuid() {
-    this.uuid = uuid.v1();
+    this.generateUuid = uuid.v1();
   }
   _validateOptions(options) {
     if (options.constructor !== Object) {

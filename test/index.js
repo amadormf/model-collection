@@ -122,7 +122,7 @@ describe('Model', () => {
 
   it('Check if not difine primary key, return uuid field', () => {
     const testModel = new Model(getOneSimpleObject());
-    expect(testModel.getPrimaryKey()).is.equal('uuid');
+    expect(testModel.getPrimaryKey()).is.equal('generateUuid');
   });
 
   it('Define model with primary key, check getPrimaryKey', () => {
@@ -148,6 +148,14 @@ describe('Model', () => {
   it('toJson', () => {
     const testModel = new Model(getOneSimpleObject());
     expect(JSON.stringify(testModel)).is.equals(JSON.stringify(getOneSimpleObject()));
+  });
+
+  it('If send uuid and don´t change primary key, save the uuid field', () => {
+    const simpleObject = getOneSimpleObject();
+    simpleObject.uuid = 'test_uuid';
+    const testModel = new Model(simpleObject);
+
+    expect(testModel.uuid).is.equals('test_uuid');
   });
 });
 
