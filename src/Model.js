@@ -61,7 +61,7 @@ export default class Model {
 
   _assignObject(finalObject) {
     Object.assign(this, finalObject);
-    if (this.getPrimaryKey() === 'uuid') {
+    if (this.getPrimaryKey() === 'uuid' && !this.getKey()) {
       this._generateUuid();
     } else {
       if (!this.getKey()) {
