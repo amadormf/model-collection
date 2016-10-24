@@ -2,6 +2,7 @@ import Model from './Model';
 
 export default class Collection {
   static _ModelClass = Model;
+
   constructor(objects = [], options = {}) {
     if (options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
@@ -65,6 +66,10 @@ export default class Collection {
       index++;
     }
     return arrayCollection;
+  }
+
+  isEmpty() {
+    return this.size() === 0;
   }
 
   getFirst() {
@@ -131,6 +136,14 @@ export default class Collection {
   }
 
   _addArray(elements) {
+    if (this._options && this._options.sortBy) {
+      elements.sort(this._options.sortBy);
+    }
+
+    if (this.constructor._sortFunction) {
+      elements.sort(this.constructor._sortFunction);
+    }
+
     for (let i = 0; i < elements.length; ++i) {
       this._addOneElement(new (this._getModel())(elements[i], this._options));
     }

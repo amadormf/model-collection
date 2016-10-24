@@ -51,6 +51,12 @@ class CollectionWithModelMock extends Collection {
   static _ModelClass = ModelWithPrimaryKeyMock;
 }
 
+class CollectionWithSortMock extends Collection {
+  static _sortFunction = (a, b) => {
+    return a.a > b.a;
+  };
+}
+
 describe('Model', () => {
   it('Check if passed invalid argument to constructor throw error', () => {
     const error = 'First argument passed to constructor is invalid, ' +
@@ -347,6 +353,55 @@ describe('Collection', () => {
   it('toJSON', () => {
     const collection = new Collection(getTwoSimpleObject());
     expect(JSON.stringify(collection)).is.equal(JSON.stringify(getTwoSimpleObject()));
+  });
+
+  it('pre sort option', () => {
+    const orderFunction = (a, b) => {
+      return a.a > b.a;
+    };
+
+    const arrayObject = [
+      {
+        a: 2,
+      },
+      {
+        a: 1,
+      },
+      {
+        a: 3,
+      }
+    ];
+
+    const collection = new Collection(arrayObject, {
+      sortBy: orderFunction,
+    });
+    expect(collection.getFirst()).to.be.deep.equal({
+      a: 1,
+    });
+    expect(collection.getLast()).to.be.deep.equal({
+      a: 3,
+    });
+  });
+
+  it('Pre sort in with static function in collection', () => {
+    const arrayObject = [
+      {
+        a: 2,
+      },
+      {
+        a: 1,
+      },
+      {
+        a: 3,
+      }
+    ];
+    const collection = new CollectionWithSortMock(arrayObject);
+    expect(collection.getFirst()).to.be.deep.equal({
+      a: 1,
+    });
+    expect(collection.getLast()).to.be.deep.equal({
+      a: 3,
+    });
   });
 });
 

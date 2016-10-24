@@ -1,9 +1,12 @@
 {
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
   "parser": "babel-eslint",
   "env": {
     "node": true
   },
   "rules": {
+    "no-underscore-dangle": "off",
+    "no-plusplus": "off",
+    "no-restricted-syntax": ["off", "ForOfStatement"]
   }
 }
