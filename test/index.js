@@ -52,9 +52,7 @@ class CollectionWithModelMock extends Collection {
 }
 
 class CollectionWithSortMock extends Collection {
-  static _sortFunction = (a, b) => {
-    return a.a > b.a;
-  };
+  static _sortFunction = (a, b) => a.a > b.a;
 }
 
 describe('Model', () => {
@@ -356,9 +354,7 @@ describe('Collection', () => {
   });
 
   it('pre sort option', () => {
-    const orderFunction = (a, b) => {
-      return a.a > b.a;
-    };
+    const orderFunction = (a, b) => a.a > b.a;
 
     const arrayObject = [
       {
@@ -369,7 +365,7 @@ describe('Collection', () => {
       },
       {
         a: 3,
-      }
+      },
     ];
 
     const collection = new Collection(arrayObject, {
@@ -393,7 +389,7 @@ describe('Collection', () => {
       },
       {
         a: 3,
-      }
+      },
     ];
     const collection = new CollectionWithSortMock(arrayObject);
     expect(collection.getFirst()).to.be.deep.equal({

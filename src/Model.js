@@ -11,8 +11,8 @@ export default class Model {
   _options = '';
 
   constructor(obj, options = {}) {
-    this._validateOptions(options);
     this._options = options;
+    this._validateOptions();
 
     if (obj && obj.constructor === Object) {
       const unserializeObj = this._unserialize(obj);
@@ -63,22 +63,22 @@ export default class Model {
     Object.assign(this, finalObject);
     if (this.getPrimaryKey() === 'generateUuid') {
       this._generateUuid();
-    } else {
-      if (!this.getKey()) {
-        throw new Error('The value for primary key is not defined');
-      }
+    }
+    if (!this.getKey()) {
+      throw new Error('The value for primary key is not defined');
     }
   }
 
   _generateUuid() {
     this.generateUuid = uuid.v1();
   }
-  _validateOptions(options) {
-    if (options.constructor !== Object) {
+
+  _validateOptions() {
+    if (this._options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
     }
 
-    if (options.unserializers && !Array.isArray(options.unserializers)) {
+    if (this._options.unserializers && !Array.isArray(this._options.unserializers)) {
       throw new Error('Unserializer has to be an array');
     }
   }
