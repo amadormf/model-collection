@@ -170,6 +170,11 @@ describe('Collection', () => {
     }).to.throw('Elements has to be an array');
   });
 
+  it('Call with null parameter and initialize with 0 elements', () => {
+    const collection = new Collection(null);
+    expect(collection.size()).to.be.equal(0);
+  });
+
   it('Call to constructor with no elements', () => {
     const collection = new Collection();
     expect(collection.size()).to.be.equal(0);
