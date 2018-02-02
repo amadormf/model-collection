@@ -4,18 +4,23 @@ export default class Collection {
   static _ModelClass = Model;
 
   constructor(objects = [], options = {}) {
+    let finalObjects = objects;
     if (options.constructor !== Object) {
       throw new Error('options parameters has to be an object');
     }
     this._options = options;
 
-    if (!Array.isArray(objects)) {
-      throw new Error('Elements has to be an array');
+    if (objects === null) {
+      finalObjects = [];
+    }
+
+    if (!Array.isArray(finalObjects)) {
+      throw new Error('Elements has to be an array recived', finalObjects);
     }
 
     this._map = new Map();
-    if (objects && objects.length > 0) {
-      this._addArray(objects);
+    if (finalObjects && finalObjects.length > 0) {
+      this._addArray(finalObjects);
     }
   }
 
@@ -148,7 +153,6 @@ export default class Collection {
       this._addOneElement(new (this._getModel())(elements[i], this._options));
     }
   }
-
 
   _getModel() {
     return this.constructor._ModelClass;
