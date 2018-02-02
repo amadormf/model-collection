@@ -1,5 +1,5 @@
 {
-  "version": "0.13.0",
+  "version": "0.13.1",
   "name": "model-collection",
   "description": "Simple model with collections",
   "author": "Amador Mateo <amateofernandez@gmail.com>",
@@ -25,8 +25,8 @@
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch",
     "test:cov": "babel-node $(npm bin)/istanbul cover $(npm bin)/_mocha -- --recursive",
-    "preversion": "npm run lint && npm test",
-    "version": "npm run compile",
+    "preversion": "yarn run lint && yarn test",
+    "version": "yarn run compile",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
