@@ -3,6 +3,7 @@ import { nonenumerable } from 'core-decorators';
 
 export default class Model {
   static _primaryKey = 'generateUuid';
+  static _requiredFields = [];
 
   @nonenumerable
   generateUuid = '';
@@ -32,6 +33,18 @@ export default class Model {
 
   getKey() {
     return this[this.getPrimaryKey()];
+  }
+
+  checkRequiredFields() {
+    for (const field of this.constructor._requiredFields) {
+      if (typeof this[field] === 'boolean') {
+        return true;
+      }
+      if (!this[field]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   _unserialize(obj) {
