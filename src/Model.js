@@ -4,6 +4,7 @@ import { nonenumerable } from 'core-decorators';
 export default class Model {
   static _primaryKey = 'generateUuid';
   static _requiredFields = [];
+  static _messageRequiredField = 'This field is required';
 
   @nonenumerable
   generateUuid = '';
@@ -37,14 +38,24 @@ export default class Model {
 
   checkRequiredFields() {
     for (const field of this.constructor._requiredFields) {
-      if (typeof this[field] === 'boolean') {
-        return true;
-      }
-      if (!this[field]) {
+      if (!this[field] && typeof this[field] !== 'boolean') {
         return false;
       }
     }
     return true;
+  }
+
+  validateRequiredFields() {
+    const errors = [];
+    for (const field of this.constructor._requiredFields) {
+      if (!this[field] && typeof this[field] !== 'boolean') {
+        errors.push({
+          field,
+          message: this.constructor._messageRequiredField,
+        });
+      }
+    }
+    return errors;
   }
 
   _unserialize(obj) {
