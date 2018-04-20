@@ -68,3 +68,8 @@ export class ModelWithRequiredFieldsChangeRequiredMessage extends Model {
   static _requiredFields = ['a', 'b'];
   static _messageRequiredField = 'Test message';
 }
+
+export class ModelWithRequiredFieldsWithPrefieldLabel extends Model {
+  static _requiredFields = ['a', 'b'];
+  static _preFieldLabel = 'test.label.';
+}

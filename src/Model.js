@@ -5,6 +5,7 @@ export default class Model {
   static _primaryKey = 'generateUuid';
   static _requiredFields = [];
   static _messageRequiredField = 'This field is required';
+  static _preFieldLabel = '';
 
   @nonenumerable
   generateUuid = '';
@@ -50,7 +51,7 @@ export default class Model {
     for (const field of this.constructor._requiredFields) {
       if (!this[field] && typeof this[field] !== 'boolean') {
         errors.push({
-          field,
+          field: this.constructor._preFieldLabel + field,
           message: this.constructor._messageRequiredField,
         });
       }
