@@ -4,6 +4,7 @@ import { Model } from '../src';
 import {
   getOneSimpleObject, unserializerMock, unserializerMockSecond,
   ModelWithPrimaryKeyMock, getAnotherSimpleObject, ModelWithRequiredFields,
+  ModelWithRequiredFieldsChangeRequiredMessage, getOneSimpleObjectWithBoolean,
 } from './mocks';
 
 describe('Model', () => {
@@ -132,6 +133,54 @@ describe('Model', () => {
       const testModel = new ModelWithRequiredFields({ a: 'a', c: 'c' });
 
       expect(testModel.checkRequiredFields()).to.be.equal(false);
+    });
+
+    it('Should return true if one of fields the value is false', () => {
+      const simpleObject = getOneSimpleObjectWithBoolean();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.checkRequiredFields()).to.be.equal(true);
+    });
+  });
+
+  context('validateRequiredFields function, Validate required fields and returns errors', () => {
+    it('Should return an array with errors fields', () => {
+      const simpleObject = getAnotherSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.validateRequiredFields()).to.be.deep.equal([
+        {
+          field: 'a',
+          message: 'This field is required',
+        },
+        {
+          field: 'b',
+          message: 'This field is required',
+        },
+      ]);
+    });
+
+    it('Should return empty array if all fields are present', () => {
+      const simpleObject = getOneSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.validateRequiredFields()).to.be.deep.equal([]);
+    });
+
+    it('Should return a custom message if change _messageRequiredField', () => {
+      const simpleObject = getAnotherSimpleObject();
+      const testModel = new ModelWithRequiredFieldsChangeRequiredMessage(simpleObject);
+
+      expect(testModel.validateRequiredFields()).to.be.deep.equal([
+        {
+          field: 'a',
+          message: ModelWithRequiredFieldsChangeRequiredMessage._messageRequiredField,
+        },
+        {
+          field: 'b',
+          message: ModelWithRequiredFieldsChangeRequiredMessage._messageRequiredField,
+        },
+      ]);
     });
   });
 

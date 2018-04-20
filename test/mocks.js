@@ -27,6 +27,13 @@ export function getTwoSimpleObject() {
   ];
 }
 
+export function getOneSimpleObjectWithBoolean() {
+  return {
+    a: 'a',
+    b: false,
+  };
+}
+
 export function unserializerMock(obj) {
   return {
     c: obj.a,
@@ -55,4 +62,9 @@ export class CollectionWithSortMock extends Collection {
 
 export class ModelWithRequiredFields extends Model {
   static _requiredFields = ['a', 'b'];
+}
+
+export class ModelWithRequiredFieldsChangeRequiredMessage extends Model {
+  static _requiredFields = ['a', 'b'];
+  static _messageRequiredField = 'Test message';
 }
