@@ -5,6 +5,7 @@ import {
   getOneSimpleObject, unserializerMock, unserializerMockSecond,
   ModelWithPrimaryKeyMock, getAnotherSimpleObject, ModelWithRequiredFields,
   ModelWithRequiredFieldsChangeRequiredMessage, getOneSimpleObjectWithBoolean,
+  ModelWithRequiredFieldsWithPrefieldLabel,
 } from './mocks';
 
 describe('Model', () => {
@@ -151,11 +152,11 @@ describe('Model', () => {
       expect(testModel.validateRequiredFields()).to.be.deep.equal([
         {
           field: 'a',
-          message: 'This field is required',
+          message: ModelWithRequiredFields._messageRequiredField,
         },
         {
           field: 'b',
-          message: 'This field is required',
+          message: ModelWithRequiredFields._messageRequiredField,
         },
       ]);
     });
@@ -174,11 +175,27 @@ describe('Model', () => {
       expect(testModel.validateRequiredFields()).to.be.deep.equal([
         {
           field: 'a',
-          message: ModelWithRequiredFieldsChangeRequiredMessage._messageRequiredField,
+          message: 'Test message',
         },
         {
           field: 'b',
-          message: ModelWithRequiredFieldsChangeRequiredMessage._messageRequiredField,
+          message: 'Test message',
+        },
+      ]);
+    });
+
+    it('Should concatenate a label to a field name if configure _preFieldLabel', () => {
+      const simpleObject = getAnotherSimpleObject();
+      const testModel = new ModelWithRequiredFieldsWithPrefieldLabel(simpleObject);
+
+      expect(testModel.validateRequiredFields()).to.be.deep.equal([
+        {
+          field: 'test.label.a',
+          message: ModelWithRequiredFieldsWithPrefieldLabel._messageRequiredField,
+        },
+        {
+          field: 'test.label.b',
+          message: ModelWithRequiredFieldsWithPrefieldLabel._messageRequiredField,
         },
       ]);
     });
