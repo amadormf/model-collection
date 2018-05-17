@@ -220,6 +220,14 @@ describe('Model', () => {
 
       expect(testModel.isValidRequiredField('a')).to.be.equal(false);
     });
+    it('Should return false if the field value is string and is empty', () => {
+      const simpleObject = getOneSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      testModel.a = '';
+
+      expect(testModel.isValidRequiredField('a')).to.be.equal(false);
+    });
   });
 
   context('Especify the type of fields', () => {

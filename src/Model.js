@@ -68,7 +68,11 @@ export default class Model {
   }
 
   _existsAndIsRequired(fieldName) {
-    return this._existInRequiredFields(fieldName) && !!this[fieldName];
+    return this._existInRequiredFields(fieldName) && !!this[fieldName] && !this._isStringAndEmpty();
+  }
+
+  _isStringAndEmpty(fieldName) {
+    return (typeof this[fieldName] === 'string' && this[fieldName] === '');
   }
 
   _existInRequiredFields(fieldName) {
