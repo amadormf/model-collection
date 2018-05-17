@@ -59,6 +59,25 @@ export default class Model {
     return errors;
   }
 
+  isValidRequiredField(fieldName) {
+    return this._notExistFieldAndNotRequired(fieldName) || this._existsAndIsRequired(fieldName);
+  }
+
+  _notExistFieldAndNotRequired(fieldName) {
+    return typeof this[fieldName] !== 'boolean' && !this[fieldName] && !this._existInRequiredFields(fieldName);
+  }
+
+  _existsAndIsRequired(fieldName) {
+    return this._existInRequiredFields(fieldName) && !!this[fieldName];
+  }
+
+  _existInRequiredFields(fieldName) {
+    const existeRequired = this.constructor._requiredFields.includes(fieldName);
+    // console.log('existeRequired', existeRequired);
+
+    return existeRequired;
+  }
+
   _unserialize(obj) {
     const { unserializers } = this._options;
 

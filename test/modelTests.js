@@ -201,6 +201,27 @@ describe('Model', () => {
     });
   });
 
+  context('isValidRequiredField, check a field required', () => {
+    it('Should return true if the field is not required', () => {
+      const simpleObject = getOneSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.isValidRequiredField('c')).to.be.equal(true);
+    });
+    it('Should return true if the field is required and exists', () => {
+      const simpleObject = getOneSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.isValidRequiredField('a')).to.be.equal(true);
+    });
+    it('Should return false if the field is required and not exists', () => {
+      const simpleObject = getAnotherSimpleObject();
+      const testModel = new ModelWithRequiredFields(simpleObject);
+
+      expect(testModel.isValidRequiredField('a')).to.be.equal(false);
+    });
+  });
+
   context('Especify the type of fields', () => {
     class WithTypePropertyModel extends Model {
       static _types = {
