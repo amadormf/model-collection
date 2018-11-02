@@ -253,5 +253,20 @@ describe('Model', () => {
       });
       expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
     });
+
+    it('Specify type with a function', () => {
+      class WithTypeFunctionPropertyModel extends Model {
+        static _types = {
+          typeModel: () => ModelWithPrimaryKeyMock,
+        };
+      }
+
+      const propertyTypeModel = new WithTypeFunctionPropertyModel({
+        a: 'a',
+        typeModel: getOneSimpleObject(),
+      });
+
+      expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
+    });
   });
 });

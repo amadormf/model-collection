@@ -1,6 +1,17 @@
 import uuid from 'uuid';
 import { nonenumerable } from 'core-decorators';
 
+function fnBody(type) {
+  return Function.prototype.toString.call(type).replace(/^[^{]*{\s*/, '').replace(/\s*}[^}]*$/, '');
+}
+
+function isClass(type) {
+  return (
+    /^class[\s{]/.test(Function.prototype.toString.call(type)) ||
+    (/^.*classCallCheck\(/.test(fnBody(type)))
+  );
+}
+
 export default class Model {
   static _primaryKey = 'generateUuid';
   static _requiredFields = [];
@@ -99,8 +110,15 @@ export default class Model {
     if (_types) {
       const typesKeys = Object.keys(_types);
       for (const typeKey of typesKeys) {
-        if (obj[typeKey] && obj[typeKey].constructor !== _types[typeKey]) {
-          obj[typeKey] = new _types[typeKey](obj[typeKey], this._options); // eslint-disable-line
+        let FinalType = _types[typeKey];
+
+        if (!isClass(FinalType)) {
+          FinalType = FinalType();
+        }
+
+        if (obj[typeKey] && obj[typeKey].constructor !== FinalType) {
+          obj[typeKey] = // eslint-disable-line no-param-reassign
+            new FinalType(obj[typeKey], this._options);
         }
       }
     }
