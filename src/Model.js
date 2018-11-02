@@ -113,7 +113,7 @@ export default class Model {
         let FinalType = _types[typeKey];
 
         if (!isClass(FinalType)) {
-          FinalType = FinalType();
+          FinalType = FinalType(obj);
         }
 
         if (obj[typeKey] && obj[typeKey].constructor !== FinalType) {
