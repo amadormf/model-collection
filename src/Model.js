@@ -8,7 +8,8 @@ function fnBody(type) {
 function isClass(type) {
   return (
     /^class[\s{]/.test(Function.prototype.toString.call(type)) ||
-    (/^.*classCallCheck\(/.test(fnBody(type)))
+    (/^.*classCallCheck\(/.test(fnBody(type))) ||
+    (/^.* classCallCheck.\.default\)/.test(fnBody(type)))
   );
 }
 
