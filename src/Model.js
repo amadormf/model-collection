@@ -88,10 +88,9 @@ export default class Model {
   }
 
   _existInRequiredFields(fieldName) {
-    const existeRequired = this.constructor._requiredFields.includes(fieldName);
-    // console.log('existeRequired', existeRequired);
+    const existRequired = this.constructor._requiredFields.includes(fieldName);
 
-    return existeRequired;
+    return existRequired;
   }
 
   _unserialize(obj) {
