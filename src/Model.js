@@ -72,22 +72,22 @@ export default class Model {
   }
 
   isValidRequiredField(fieldName) {
-    return this._notExistFieldAndNotRequired(fieldName) || this._existsAndIsRequired(fieldName);
+    return this._notExistFieldAndNotRequired(fieldName) || this.existsAndIsRequired(fieldName);
   }
 
   _notExistFieldAndNotRequired(fieldName) {
-    return typeof this[fieldName] !== 'boolean' && !this[fieldName] && !this._existInRequiredFields(fieldName);
+    return typeof this[fieldName] !== 'boolean' && !this[fieldName] && !this.existInRequiredFields(fieldName);
   }
 
-  _existsAndIsRequired(fieldName) {
-    return this._existInRequiredFields(fieldName) && !!this[fieldName] && !this._isStringAndEmpty();
+  existsAndIsRequired(fieldName) {
+    return this.existInRequiredFields(fieldName) && !!this[fieldName] && !this._isStringAndEmpty();
   }
 
   _isStringAndEmpty(fieldName) {
     return (typeof this[fieldName] === 'string' && this[fieldName] === '');
   }
 
-  _existInRequiredFields(fieldName) {
+  existInRequiredFields(fieldName) {
     const existRequired = this.constructor._requiredFields.includes(fieldName);
 
     return existRequired;
