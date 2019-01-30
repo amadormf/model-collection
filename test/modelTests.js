@@ -269,4 +269,11 @@ describe('Model', () => {
       expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
     });
   });
+  context('toObject function', () => {
+    it('Simble model toObject', () => {
+      const objModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());
+
+      expect(objModel.toObject()).to.be.deep.equal(getOneSimpleObject());
+    });
+  });
 });

@@ -148,4 +148,13 @@ export default class Model {
       throw new Error('Unserializer has to be an array');
     }
   }
+
+  toObject() {
+    const keys = Object.keys(this);
+    const obj = {};
+
+    keys.forEach((key) => { obj[key] = this[key]; });
+
+    return obj;
+  }
 }
