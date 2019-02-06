@@ -11,7 +11,7 @@ function isClass(type) {
     /^class[\s{]/.test(Function.prototype.toString.call(type)) ||
     (/^.*classCallCheck\(/.test(fn)) ||
     (/^.*classCallCheck.\.default\)/.test(fn)) ||
-    (/^.* classCallCheck__/.test(fn))
+    (/^.*classCallCheck__/.test(fn))
   );
 }
 
