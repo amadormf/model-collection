@@ -5,7 +5,7 @@ import {
   getOneSimpleObject, unserializerMock, unserializerMockSecond,
   ModelWithPrimaryKeyMock, getAnotherSimpleObject, ModelWithRequiredFields,
   ModelWithRequiredFieldsChangeRequiredMessage, getOneSimpleObjectWithBoolean,
-  ModelWithRequiredFieldsWithPrefieldLabel,
+  ModelWithRequiredFieldsWithPrefieldLabel, CollectionWithModelMock,
 } from './mocks';
 
 describe('Model', () => {
@@ -267,6 +267,35 @@ describe('Model', () => {
       });
 
       expect(propertyTypeModel.typeModel.constructor).to.be.equal(ModelWithPrimaryKeyMock);
+    });
+
+    it('Specify type Collection', () => {
+      class WithTypeCollection extends Model {
+        static _types = {
+          typeCollection: CollectionWithModelMock,
+        }
+      }
+
+      const typeCollection = [
+        {
+          a: 'a',
+        },
+        {
+          a: 'b',
+        },
+      ];
+
+      const data = ({
+        test: 'test',
+        typeCollection,
+      });
+
+      const model = new WithTypeCollection(data);
+
+      expect(model.typeCollection.constructor).to.be.equal(CollectionWithModelMock);
+      expect(model.typeCollection.size()).to.be.equal(2);
+      expect(model.typeCollection.getFirst()).to.be.deep.equal({ a: 'a' });
+      console.log(data);
     });
   });
   context('toObject function', () => {

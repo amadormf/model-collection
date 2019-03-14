@@ -110,6 +110,7 @@ export default class Model {
   _checkTypeProperties(obj) {
     const _types = this.constructor._types;
     if (_types) {
+      const newObj = Object.assign({}, obj);
       const typesKeys = Object.keys(_types);
       for (const typeKey of typesKeys) {
         let FinalType = _types[typeKey];
@@ -119,10 +120,11 @@ export default class Model {
         }
 
         if (obj[typeKey] && obj[typeKey].constructor !== FinalType) {
-          obj[typeKey] = // eslint-disable-line no-param-reassign
+          newObj[typeKey] = // eslint-disable-line no-param-reassign
             new FinalType(obj[typeKey], this._options);
         }
       }
+      return newObj;
     }
     return obj;
   }
