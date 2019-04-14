@@ -150,7 +150,11 @@ export default class Collection {
     }
 
     for (let i = 0; i < elements.length; ++i) {
-      this._addOneElement(new (this._getModel())(elements[i], this._options));
+      if (elements[i] instanceof this._getModel()){
+        this._addOneElement(elements[i]);
+      } else {
+        this._addOneElement(new (this._getModel())(elements[i], this._options));
+      }
     }
   }
 

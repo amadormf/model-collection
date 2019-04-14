@@ -249,5 +249,12 @@ describe('Collection', () => {
       });
     });
   });
+
+  it('Call constructor with models', () => {
+    const instance = new ModelWithPrimaryKeyMock({a: 'a'});
+    const collectionInstance = new CollectionWithModelMock([instance]);
+
+    expect(collectionInstance.size()).to.be.equal(1);
+  });
 });
 
