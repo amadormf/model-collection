@@ -154,6 +154,22 @@ describe('Collection', () => {
     expect(collectionArray).to.be.a('array');
     expect(collectionArray[0]).to.have.includes.keys('c', 'd');
   });
+
+  it('Check revertMap collection', () => {
+    const collection = new Collection(getTwoSimpleObject());
+    const arrayOfIndex = [];
+    const collectionArray = collection.revertMap((element, index) => {
+      arrayOfIndex.push(index);
+      return element;
+    });
+
+    expect(arrayOfIndex).to.has.length(2);
+    expect(arrayOfIndex).to.have.members([0, 1]);
+    expect(collectionArray).to.be.a('array');
+    expect(collectionArray[0]).to.have.includes.keys('e', 'f');
+    expect(collectionArray[1]).to.have.includes.keys('c', 'd');
+  });
+
   it('Get first element of collection', () => {
     const collection = new Collection(getTwoSimpleObject());
 
@@ -251,7 +267,7 @@ describe('Collection', () => {
   });
 
   it('Call constructor with models', () => {
-    const instance = new ModelWithPrimaryKeyMock({a: 'a'});
+    const instance = new ModelWithPrimaryKeyMock({ a: 'a' });
     const collectionInstance = new CollectionWithModelMock([instance]);
 
     expect(collectionInstance.size()).to.be.equal(1);

@@ -73,6 +73,18 @@ export default class Collection {
     return arrayCollection;
   }
 
+  revertMap(cb) {
+    const arrayCollection = [];
+
+    const values = this.toArray();
+
+    for (let i = values.length - 1; i >= 0; --i) {
+      arrayCollection.push(cb(values[i], i));
+    }
+
+    return arrayCollection;
+  }
+
   isEmpty() {
     return this.size() === 0;
   }
@@ -150,7 +162,7 @@ export default class Collection {
     }
 
     for (let i = 0; i < elements.length; ++i) {
-      if (elements[i] instanceof this._getModel()){
+      if (elements[i] instanceof this._getModel()) {
         this._addOneElement(elements[i]);
       } else {
         this._addOneElement(new (this._getModel())(elements[i], this._options));
@@ -161,6 +173,4 @@ export default class Collection {
   _getModel() {
     return this.constructor._ModelClass;
   }
-
-
 }

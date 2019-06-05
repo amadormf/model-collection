@@ -295,7 +295,6 @@ describe('Model', () => {
       expect(model.typeCollection.constructor).to.be.equal(CollectionWithModelMock);
       expect(model.typeCollection.size()).to.be.equal(2);
       expect(model.typeCollection.getFirst()).to.be.deep.equal({ a: 'a' });
-      console.log(data);
     });
   });
   context('toObject function', () => {
