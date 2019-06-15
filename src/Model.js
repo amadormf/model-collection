@@ -160,7 +160,7 @@ export default class Model {
     keys.forEach((key) => {
       if (this[key] instanceof Model) {
         obj[key] = this[key].toObject();
-      } else if (typeof this[key].toArray === 'function') {
+      } else if (this[key] && typeof this[key].toArray === 'function') {
         obj[key] = this[key].toArray();
       } else {
         obj[key] = this[key];
