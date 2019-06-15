@@ -157,7 +157,15 @@ export default class Model {
     const keys = Object.keys(this);
     const obj = {};
 
-    keys.forEach((key) => { obj[key] = this[key]; });
+    keys.forEach((key) => {
+      if (this[key] instanceof Model) {
+        obj[key] = this[key].toObject();
+      } else if (typeof this[key].toArray === 'function') {
+        obj[key] = this[key].toArray();
+      } else {
+        obj[key] = this[key];
+      }
+    });
 
     return obj;
   }

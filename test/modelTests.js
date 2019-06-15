@@ -303,5 +303,51 @@ describe('Model', () => {
 
       expect(objModel.toObject()).to.be.deep.equal(getOneSimpleObject());
     });
+    it('Model with inside type toObject', () => {
+      class WithTypePropertyModel extends Model {
+        static _types = {
+          typeModel: ModelWithPrimaryKeyMock,
+        };
+      }
+
+      const propertyTypeModel = new WithTypePropertyModel({
+        a: 'a',
+        typeModel: getOneSimpleObject(),
+      });
+
+      expect(propertyTypeModel.toObject()).to.be.deep.equal({
+        a: 'a',
+        typeModel: getOneSimpleObject(),
+      });
+    });
+
+    it('Model with inside type collection toObject', () => {
+      class WithTypeCollection extends Model {
+        static _types = {
+          typeCollection: CollectionWithModelMock,
+        }
+      }
+
+      const typeCollection = [
+        {
+          a: 'a',
+        },
+        {
+          a: 'b',
+        },
+      ];
+
+      const data = ({
+        typeCollection,
+        test: 'test',
+      });
+
+      const model = new WithTypeCollection(data);
+
+      expect(model.toObject()).to.be.deep.equal({
+        test: 'test',
+        typeCollection,
+      });
+    });
   });
 });
