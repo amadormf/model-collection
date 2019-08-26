@@ -155,6 +155,20 @@ describe('Collection', () => {
     expect(collectionArray[0]).to.have.includes.keys('c', 'd');
   });
 
+  it('Check filter collection', () => {
+    const collection = new Collection(getTwoSimpleObject());
+
+    const filteredCollection = collection.filter((item) => {
+      console.log(item);
+      return item.hasOwnProperty('c');
+    });
+
+    console.log(filteredCollection);
+
+    expect(filteredCollection).to.has.length(1);
+    expect(filteredCollection[0]).to.have.includes.keys('c', 'd');
+  });
+
   it('Check revertMap collection', () => {
     const collection = new Collection(getTwoSimpleObject());
     const arrayOfIndex = [];

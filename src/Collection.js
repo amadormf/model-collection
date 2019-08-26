@@ -73,6 +73,20 @@ export default class Collection {
     return arrayCollection;
   }
 
+  filter(cb) {
+    const arrayCollection = [];
+    let index = 0;
+
+    const values = this.toArray();
+    values.forEach((item) => {
+      if (cb(item)) {
+        arrayCollection.push(item);
+      }
+    });
+
+    return arrayCollection;
+  }
+
   revertMap(cb) {
     const arrayCollection = [];
 
