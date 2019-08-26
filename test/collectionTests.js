@@ -158,12 +158,9 @@ describe('Collection', () => {
   it('Check filter collection', () => {
     const collection = new Collection(getTwoSimpleObject());
 
-    const filteredCollection = collection.filter((item) => {
-      console.log(item);
-      return item.hasOwnProperty('c');
-    });
-
-    console.log(filteredCollection);
+    const filteredCollection = collection.filter(
+      item => (Object.prototype.hasOwnProperty.call(item, 'c'))
+    );
 
     expect(filteredCollection).to.has.length(1);
     expect(filteredCollection[0]).to.have.includes.keys('c', 'd');

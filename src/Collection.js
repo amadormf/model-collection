@@ -75,7 +75,6 @@ export default class Collection {
 
   filter(cb) {
     const arrayCollection = [];
-    let index = 0;
 
     const values = this.toArray();
     values.forEach((item) => {
