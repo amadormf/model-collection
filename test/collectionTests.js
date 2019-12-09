@@ -230,7 +230,7 @@ describe('Collection', () => {
 
   context('pre sort', () => {
     it('pre sort option', () => {
-      const orderFunction = (a, b) => (a.a > b.a);
+      const orderFunction = (a, b) => (a.a - b.a);
 
       const arrayObject = [
         {

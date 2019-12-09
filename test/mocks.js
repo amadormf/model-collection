@@ -57,7 +57,7 @@ export class CollectionWithModelMock extends Collection {
 }
 
 export class CollectionWithSortMock extends Collection {
-  static _sortFunction = (a, b) => a.a > b.a;
+  static _sortFunction = (a, b) => a.a - b.a;
 }
 
 export class ModelWithRequiredFields extends Model {
