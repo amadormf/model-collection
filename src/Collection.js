@@ -170,6 +170,7 @@ export default class Collection {
       elements.sort(this._options.sortBy);
     }
 
+
     if (this.constructor._sortFunction) {
       elements.sort(this.constructor._sortFunction);
     }
@@ -185,5 +186,9 @@ export default class Collection {
 
   _getModel() {
     return this.constructor._ModelClass;
+  }
+
+  remove(id) {
+    return this._map.delete(id);
   }
 }

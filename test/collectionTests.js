@@ -230,7 +230,7 @@ describe('Collection', () => {
 
   context('pre sort', () => {
     it('pre sort option', () => {
-      const orderFunction = (a, b) => a.a > b.a;
+      const orderFunction = (a, b) => (a.a > b.a);
 
       const arrayObject = [
         {
@@ -247,6 +247,7 @@ describe('Collection', () => {
       const collection = new Collection(arrayObject, {
         sortBy: orderFunction,
       });
+
       expect(collection.getFirst()).to.be.deep.equal({
         a: 1,
       });
@@ -282,6 +283,21 @@ describe('Collection', () => {
     const collectionInstance = new CollectionWithModelMock([instance]);
 
     expect(collectionInstance.size()).to.be.equal(1);
+  });
+
+  it('Remove an element', () => {
+    const instances = [
+      new ModelWithPrimaryKeyMock({ a: '1' }), new ModelWithPrimaryKeyMock({ a: '2' }),
+    ];
+
+    const collectionInstance = new CollectionWithModelMock(instances);
+
+    collectionInstance.remove('2');
+
+    expect(collectionInstance.size()).to.be.equal(1);
+    expect(collectionInstance.getFirst()).to.be.deep.equal({
+      a: '1',
+    });
   });
 });
 
