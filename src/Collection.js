@@ -191,4 +191,12 @@ export default class Collection {
   remove(id) {
     return this._map.delete(id);
   }
+
+  removeByField(field, value) {
+    for (const element of this._map) {
+      if (element[1][field] === value) {
+        this._map.delete(element[0]);
+      }
+    }
+  }
 }

@@ -299,5 +299,20 @@ describe('Collection', () => {
       a: '1',
     });
   });
+
+  it('Remove an element by field', () => {
+    const instances = [
+      new ModelWithPrimaryKeyMock({ a: '1', b: '1' }), new ModelWithPrimaryKeyMock({ a: '2', b: '2' }),
+    ];
+
+    const collectionInstance = new CollectionWithModelMock(instances);
+
+    collectionInstance.removeByField('b', '2');
+
+    expect(collectionInstance.size()).to.be.equal(1);
+    expect(collectionInstance.getFirst()).to.be.deep.equal({
+      a: '1', b: '1',
+    });
+  });
 });
 
