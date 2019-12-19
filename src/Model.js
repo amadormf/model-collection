@@ -7,11 +7,13 @@ function fnBody(type) {
 
 function isClass(type) {
   const fn = fnBody(type);
+
   return (
     /^class[\s{]/.test(Function.prototype.toString.call(type)) ||
-    (/^.*classCallCheck\(/.test(fn)) ||
-    (/^.*classCallCheck.\.default\)/.test(fn)) ||
-    (/^.*classCallCheck__/.test(fn))
+    /^.*classCallCheck\(/.test(fn) ||
+    /^.*classCallCheck.\.default\)/.test(fn) ||
+    /^.*classCallCheck__/.test(fn) ||
+    /^.*classCallCheck.\["default"\]/.test(fn)
   );
 }
 
