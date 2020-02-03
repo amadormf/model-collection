@@ -297,6 +297,7 @@ describe('Model', () => {
       expect(model.typeCollection.getFirst()).to.be.deep.equal({ a: 'a' });
     });
   });
+
   context('toObject function', () => {
     it('Simble model toObject', () => {
       const objModel = new ModelWithPrimaryKeyMock(getOneSimpleObject());

@@ -1,21 +1,6 @@
 import uuid from 'uuid';
 import { nonenumerable } from 'core-decorators';
 
-function fnBody(type) {
-  return Function.prototype.toString.call(type).replace(/^[^{]*{\s*/, '').replace(/\s*}[^}]*$/, '');
-}
-
-function isClass(type) {
-  const fn = fnBody(type);
-
-  return (
-    /^class[\s{]/.test(Function.prototype.toString.call(type)) ||
-    /^.*classCallCheck\(/.test(fn) ||
-    /^.*classCallCheck.\.default\)/.test(fn) ||
-    /^.*classCallCheck__/.test(fn) ||
-    /^.*classCallCheck.\["default"\]/.test(fn)
-  );
-}
 
 export default class Model {
   static _primaryKey = 'generateUuid';
@@ -117,8 +102,12 @@ export default class Model {
       for (const typeKey of typesKeys) {
         let FinalType = _types[typeKey];
 
-        if (!isClass(FinalType)) {
+        try {
           FinalType = FinalType(obj);
+        } catch (error) {
+          if (error.message !== 'Cannot call a class as a function') {
+            throw error;
+          }
         }
 
         if (obj[typeKey] && obj[typeKey].constructor !== FinalType) {

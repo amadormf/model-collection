@@ -314,5 +314,36 @@ describe('Collection', () => {
       a: '1', b: '1',
     });
   });
+
+  context('Children classes', () => {
+    class Parent extends Model {}
+    class ChildrenA extends Parent {}
+    class ChildrenB extends Parent {}
+
+    class ParentCollections extends Collection {
+      static _ModelClass = {
+        a: ChildrenA,
+        b: ChildrenB,
+      };
+
+      static discriminatorField = 'type';
+    }
+
+
+    it('Should construct a children class', () => {
+      const data = [
+        {
+          type: 'a',
+        },
+        {
+          type: 'b',
+        },
+      ];
+
+      const collection = new ParentCollections(data);
+      expect(collection.getFirst()).to.be.an.instanceof(ChildrenA);
+      expect(collection.getLast()).to.be.an.instanceof(ChildrenB);
+    });
+  });
 });
 

@@ -149,7 +149,7 @@ export default class Collection {
   }
 
   _addOneElement(element) {
-    if (element instanceof this._getModel()) {
+    if (element instanceof this._getModel(element)) {
       if (!this._firstElement) {
         this._firstElement = element;
       }
@@ -176,16 +176,25 @@ export default class Collection {
     }
 
     for (let i = 0; i < elements.length; ++i) {
-      if (elements[i] instanceof this._getModel()) {
+      if (elements[i] instanceof this._getModel(elements[i])) {
         this._addOneElement(elements[i]);
       } else {
-        this._addOneElement(new (this._getModel())(elements[i], this._options));
+        this._addOneElement(
+          new (this._getModel(elements[i]))(elements[i], this._options));
       }
     }
   }
 
-  _getModel() {
-    return this.constructor._ModelClass;
+  _getModel(data) {
+    if (typeof this.constructor._ModelClass === 'function') {
+      return this.constructor._ModelClass;
+    }
+
+    if (!data) {
+      return this.constructor._ModelClass;
+    }
+
+    return this.constructor._ModelClass[data[this.constructor.discriminatorField]];
   }
 
   remove(id) {
