@@ -47,7 +47,7 @@
     "eslint-plugin-promise": "^3.3.0",
     "eslint-plugin-standard": "^2.0.1",
     "istanbul": "^1.0.0-alpha",
-    "jsdom": "8.0.2",
+    "jsdom": "16.5.0",
     "jsdom-global": "1.6.1",
     "mocha": "^2.3.4",
     "sinon": "^1.17.3"
